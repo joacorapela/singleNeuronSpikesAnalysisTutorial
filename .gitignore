@@ -6,6 +6,6 @@ results/*
 log/*
 figures/*
 doc/*
-!doc/*.tex
-!doc/*pdf
-!doc/Makefile
+!doc/contents/*.tex
+!doc/contents/*pdf
+!doc/contents/Makefile
