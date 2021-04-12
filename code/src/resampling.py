@@ -17,3 +17,15 @@ def compute_bootstrap_CI(boot_sample, significance, two_sided=True, side="up"):
         else:
             ci = np.percentile(boot_sample, p=100*(1-significance))
     return ci
+
+def compute_bootstrap_HT_sign(null_hyp_samples, observed, two_sided=True, side="up"):
+    if two_sided:
+        prop_ge_obs = np.sum(null_hyp_samples>=observed)/len(null_hyp_samples)
+        prop_le_obs = np.sum(null_hyp_samples<=observed)/len(null_hyp_samples)
+        sign = min(prop_ge_obs, prop_le_obs)
+    else:
+        if side == up:
+            sign = np.sum(null_hyp_samples>=observed)/len(null_hyp_samples)
+        else:
+            sign = np.sum(null_hyp_samples<=observed)/len(null_hyp_samples)
+    return sign
