@@ -24,7 +24,7 @@ def main(argv):
                         default="../../data/66A_int13_14.npz")
     parser.add_argument("--fig_filename_pattern", 
                         help="figure filename pattern",
-                        default="../../figures/inverseGaussianFit.{:s}")
+                        default="../../figures/invGaussianLearned.{:s}")
     args = parser.parse_args()
 
     max_ISI_in_hist = args.max_ISI_in_hist
@@ -85,7 +85,7 @@ def main(argv):
     fig.update_xaxes(title_text="ISI (ms)", range=[0, max_ISI_to_plot])
     fig.update_yaxes(title_text="Probability")
     # fig.update_layout(title=r"$\text{{Female1:}} \mu={:.02f}, \lambda={:.02f}, \text{{Female2:}} \mu={:.02f}, \lambda={:.02f}$".format(female1_mu, female1_lambda, female2_mu, female2_lambda))
-    fig.update_layout(title=r"$\text{{Female1:}}\;\mu={:.02f}\;\text{{sec}},\;\lambda={:.02f}\;\text{{Hz}},\;\text{{Female2:}}\;\mu={:.02f}\;\text{{sec}},\;\lambda={:.02f}\;\text{{Hz}}$".format(female1_mu_sec, female1_lambda_Hz, female2_mu_sec, female2_lambda_Hz))
+    fig.update_layout(title=r"$\text{{Female1:}}\;\mu={:.04f}\;\text{{sec}},\;\lambda={:.02f}\;\text{{Hz}},\;\text{{Female2:}}\;\mu={:.04f}\;\text{{sec}},\;\lambda={:.02f}\;\text{{Hz}}$".format(female1_mu_sec, female1_lambda_Hz, female2_mu_sec, female2_lambda_Hz))
     html_fig_filename = fig_filename_pattern.format("html")
     png_fig_filename = fig_filename_pattern.format("png")
     fig.write_html(html_fig_filename)
