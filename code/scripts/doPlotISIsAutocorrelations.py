@@ -118,7 +118,7 @@ def main(argv):
     diff_fig.add_hline(y=diff_significance, line_dash="dash")
     diff_fig.add_hline(y=-diff_significance, line_dash="dash")
     diff_fig.update_xaxes(title_text="Number of Spikes in the Past")
-    diff_fig.update_yaxes(title_text="Autocorrelation Diffeence", range=ylim)
+    diff_fig.update_yaxes(title_text="Autocorrelation Difference", range=ylim)
 
     html_fig_filename = diff_fig_filename_pattern.format("html")
     png_fig_filename = diff_fig_filename_pattern.format("png")
