@@ -5,3 +5,7 @@ results/*
 # data/*
 log/*
 figures/*
+doc/*
+!doc/*.tex
+!doc/*pdf
+!doc/Makefile
