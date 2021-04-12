@@ -34,10 +34,10 @@ def main(argv):
                         default="../../data/66A_int13_14.npz")
     parser.add_argument("--fig_filename_pattern",
                         help="figure filename pattern",
-                        default="../../figures/autocorrelations.{:s}")
+                        default="../../figures/incrementsAutocorrelations.{:s}")
     parser.add_argument("--diff_fig_filename_pattern",
                         help="difference figure filename pattern",
-                        default="../../figures/diffAutocorrelations.{:s}")
+                        default="../../figures/diffIncrementsAutocorrelations.{:s}")
     args = parser.parse_args()
 
     start_time_sec = args.start_time_sec
