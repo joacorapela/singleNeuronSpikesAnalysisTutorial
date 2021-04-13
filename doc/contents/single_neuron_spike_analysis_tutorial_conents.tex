@@ -8,7 +8,7 @@
 \usepackage{verbatim}
 
 \title{Tutorial on statistical analysis of single-neuron spiking activity}
-\author{}
+\author{Joaqu\'{i}n Rapela\thanks{j.rapela@ucl.ac.uk}}
 
 \begin{document}
 
@@ -18,22 +18,60 @@ This tutorial will provide participants with computational experience
 (e.g., statistics, programming, plotting) to better understand single-neuron
 spiking activity.
 
-We will use spikes from one neuron recorded by Cristina Masuzki from the
-amygdala of a female mouse while she was interacting, in different sessions,
-with two other female mice (i.e., \texttt{female1} and \texttt{female2}). We will try to find
-features of the recordings from which a downstream neuron could decode the
-identity of the interacting mice (\texttt{female1} or \texttt{female2}) by only looking at the
-spiking activity of the recorded neuron.
+We will use spikes from one neuron recorded by \href{https://www.sainsburywellcome.org/web/people/cristina-mazuski}{Cristina Mazuski} from the
+amygdala of a female rat while she was interacting, in different sessions,
+with two other female rats (i.e., \texttt{female1} and \texttt{female2}). We will try to find
+features of these recordings from which a downstream neuron could decode the
+identity of the interacting rat (\texttt{female1} or \texttt{female2}) by only looking at the
+spiking activity of the the analyzed neuron.
 
 In the first part of the tutorial we will try to do this decoding using various
-statistical measures of the recorded data (e.g., inter-spike intervals,
-autocorrelations; Section~\ref{sec:descriptive_statistics}), and in the second
-part we will attempt to infer response properties of the recorded neuron using
-statistical models and decode based on these inferred properties
-(Section~\ref{sec:inferential_statistics}).
+statistical measures of the recorded data (e.g., spike counts, inter-spike
+intervals, autocorrelations; Section~\ref{sec:descriptive_statistics}). In the
+second part we will attempt to infer response properties of the recorded neuron
+using statistical models and to decode the identity of the interacting rat
+based on these inferred properties (Section~\ref{sec:inferential_statistics}).
 
-The code and data to generate all the figures in this tutorial appear at this
-\href{https://github.com/joacorapela/singleNeuronSpikesAnalysisTutorial}{link}.
+This tutorial will be very hands-on and provide practical experience in:
+
+\subsubsection*{Statistical neuroscience}
+
+        \begin{itemize}
+            \item descriptive statistics for point processes (plots of increment processes, histograms of ISIs),
+            \item statistics for spiking activity (Fano factor, autocorrelations of increments and ISIs),
+            \item probabilistic models for spikes (e.g., Poisson process, inverse Gaussian process),
+            \item maximum likelihood parameter estimation,
+            \item confidence intervals and hypothesis tests (parametric, simulation),
+        \end{itemize}
+
+\subsubsection*{Python programming}
+
+        \begin{itemize}
+            \item code organization: packages, modules, classes, functions,
+            \item object-oriented programming,
+            \item Python scientific programming libraries: numpy, scipy,
+            \item interactive data visualization,
+            \item exceptions, containers, command-line-arguments, \ldots
+        \end{itemize}
+
+\subsubsection*{Open-science tools}
+
+        \begin{itemize}
+            \item git, Github,
+            \item Ancanconda,
+            \item interactive data visualilzation (as in this document)
+        \end{itemize}
+
+\vspace{0.5in}
+
+This tutorial will be jointly lead by a group of GCNU and SWC members (e.g.,
+\href{https://www.sainsburywellcome.org/web/people/adam-tyson}{Adam Tyson},
+\href{https://www.sainsburywellcome.org/web/people/cristina-mazuski}{Cristina
+Mazuski}, \href{http://www.gatsby.ucl.ac.uk/~lucass/}{Lucas Sim\~{o}es},
+\href{http://www.gatsby.ucl.ac.uk/~rapela/index.html}{Joaqu\'{i}n Rapela}).
+%
+The code and data to generate all the figures in this tutorial appear
+\href{https://github.com/joacorapela/singleNeuronSpikesAnalysisTutorial}{here}.
 
 \section{Descriptive statistics}
 \label{sec:descriptive_statistics}
@@ -45,35 +83,31 @@ We will display and apply statistical tests to:
     \item spike times (Figure~\ref{fig:spikesTimes},
 \href{https://github.com/joacorapela/singleNeuronSpikesAnalysisTutorial/blob/master/code/scripts/doPlotSpikeTimes.py}{doPlotSpikeTimes.py}).
 
-    \item inter-spike-intervals histograms (ISIs, Figure~\ref{fig:ISIsHist},
-\href{https://github.com/joacorapela/singleNeuronSpikesAnalysisTutorial/blob/master/code/scripts/doPlotISIsHistograms.py}{doPlotISIsHistograms.py}). 
-
-    \item binned spike increments (Figure~\ref{fig:increments},
-\href{https://github.com/joacorapela/singleNeuronSpikesAnalysisTutorial/blob/master/code/scripts/doPlotIncrements.py}{doPlotIncrements.py}).
-
-    \item autocorrelations between increments (Figures~\ref{fig:incrementsAutocorrelations} and~Figure~\ref{fig:diffIncrementsAutocorrelations}, \href{https://github.com/joacorapela/singleNeuronSpikesAnalysisTutorial/blob/master/code/scripts/doPlotIncrementsAutocorrelations.py}{doPlotIncrementsAutocorrelations.py}).
-
-    \item autocorrelations between ISIs (Figures~\ref{fig:ISIsAutocorrelations} and~Figure~\ref{fig:diffISIsAutocorrelations}, \href{https://github.com/joacorapela/singleNeuronSpikesAnalysisTutorial/blob/master/code/scripts/doPlotISIsAutocorrelations.py}{doPlotISIsAutocorrelations.py}).
-
-\end{enumerate}
-
 \begin{figure}
     \href{http://www.gatsby.ucl.ac.uk/~rapela/singleNeuronSpikesAnalysisTutorial/figures/spike_times.html}{\includegraphics[width=6.0in]{../../figures/spike_times.png}}
     \caption{Spikes times. Click on the figure to see its interactive version.}
     \label{fig:spikesTimes}
 \end{figure}
 
+    \item inter-spike-intervals histograms (ISIs, Figure~\ref{fig:ISIsHist},
+\href{https://github.com/joacorapela/singleNeuronSpikesAnalysisTutorial/blob/master/code/scripts/doPlotISIsHistograms.py}{doPlotISIsHistograms.py}). 
+
 \begin{figure}
     \href{http://www.gatsby.ucl.ac.uk/~rapela/singleNeuronSpikesAnalysisTutorial/figures/ISIsHist.html}{\includegraphics[width=6.0in]{../../figures/ISIsHist.png}}
-    \caption{Spikes times. Click on the figure to see its interactive version.}
+    \caption{ISIs histograms. Click on the figure to see its interactive version.}
     \label{fig:ISIsHist}
 \end{figure}
+
+    \item binned spike increments (Figure~\ref{fig:increments},
+\href{https://github.com/joacorapela/singleNeuronSpikesAnalysisTutorial/blob/master/code/scripts/doPlotIncrements.py}{doPlotIncrements.py}).
 
 \begin{figure}
     \href{http://www.gatsby.ucl.ac.uk/~rapela/singleNeuronSpikesAnalysisTutorial/figures/increments.html}{\includegraphics[width=6.0in]{../../figures/increments.png}}
     \caption{Binned spike increments, Fano factors and their 95\% bootstrap confidence intervals. Click on the figure to see its interactive version.}
     \label{fig:increments}
 \end{figure}
+
+    \item autocorrelations between increments (Figures~\ref{fig:incrementsAutocorrelations} and~Figure~\ref{fig:diffIncrementsAutocorrelations}, \href{https://github.com/joacorapela/singleNeuronSpikesAnalysisTutorial/blob/master/code/scripts/doPlotIncrementsAutocorrelations.py}{doPlotIncrementsAutocorrelations.py}).
 
 \begin{figure}
     \href{http://www.gatsby.ucl.ac.uk/~rapela/singleNeuronSpikesAnalysisTutorial/figures/incrementsAutocorrelations.html}{\includegraphics[width=6.0in]{../../figures/incrementsAutocorrelations.png}}
@@ -83,9 +117,11 @@ We will display and apply statistical tests to:
 
 \begin{figure}
     \href{http://www.gatsby.ucl.ac.uk/~rapela/singleNeuronSpikesAnalysisTutorial/figures/diffIncrementsAutocorrelations.html}{\includegraphics[width=6.0in]{../../figures/diffIncrementsAutocorrelations.png}}
-    \caption{Difference between the increments autocorrelations of \texttt{female1} and \texttt{femal2}, and their 95\% approximate confidence intervals for lack of significance difference. Click on the figure to see its interactive version.}
+    \caption{Difference between the increments autocorrelations of \texttt{female1} and \texttt{female2}, and their 95\% approximate confidence intervals for lack of significance difference. Click on the figure to see its interactive version.}
     \label{fig:diffIncrementsAutocorrelations}
 \end{figure}
+
+    \item autocorrelations between ISIs (Figures~\ref{fig:ISIsAutocorrelations} and~Figure~\ref{fig:diffISIsAutocorrelations}, \href{https://github.com/joacorapela/singleNeuronSpikesAnalysisTutorial/blob/master/code/scripts/doPlotISIsAutocorrelations.py}{doPlotISIsAutocorrelations.py}).
 
 \begin{figure}
     \href{http://www.gatsby.ucl.ac.uk/~rapela/singleNeuronSpikesAnalysisTutorial/figures/ISIsAutocorrelations.html}{\includegraphics[width=6.0in]{../../figures/ISIsAutocorrelations.png}}
@@ -99,12 +135,14 @@ We will display and apply statistical tests to:
     \label{fig:diffISIsAutocorrelations}
 \end{figure}
 
+\end{enumerate}
+
 \section{Inferential statistics}
 \label{sec:inferential_statistics}
 
 We will fit statistical models to the ISIs from the interactions with \texttt{female1} and \texttt{female2}. We will use two types of statistical models for ISIs: exponential (Section~\ref{sec:exponential_model}) and inverse Gaussian (Section~\ref{sec:inverse_Gaussian_model}).
 
-To try to decode the identity of the interaction from these models, we will take two approaches. First we will test if the estimated parameters of these models are statistically different from each other. Second, we will build a Naive Bayes Clasifier to decode the identity of the interaction from calculated ISIs, we will build confusion matrices and derive statistical measures from them to assess the accuracy of these decodings.
+To try to decode the identity of the interaction using these models, we will take two approaches. First we will test if the estimated parameters of these models are statistically different from each other. Second, we will build a Naive Bayes Classifier to decode the identity of the interaction from calculated ISIs, we will build confusion matrices and derive statistical measures from them to assess the accuracy of these decodings.
 
 \subsection{Exponential model}
 \label{sec:exponential_model}
@@ -118,8 +156,8 @@ The title of Figure~\ref{fig:exponential_model_fit} shows the
 parameters estimated for each exponential model. The model for
 \texttt{female1} appears to have a larger $\lambda$ parameter than that
 for \texttt{female2}. To test if this difference is statistical
-significant, we performed a bootstrap hypothesis test, which results
-are show in Figure~\ref{fig:diffLambdaExpModel_fit} (\href{https://github.com/joacorapela/singleNeuronSpikesAnalysisTutorial/blob/master/code/scripts/doTestDiffLambdaExpModels.py}{doTestDiffLambdaExpModels.py}) . This test
+significant, we performed a bootstrap hypothesis test, which result
+is show in Figure~\ref{fig:diffLambdaExpModel_fit} (\href{https://github.com/joacorapela/singleNeuronSpikesAnalysisTutorial/blob/master/code/scripts/doTestDiffLambdaExpModels.py}{doTestDiffLambdaExpModels.py}) . This test
 indicates that the difference is not significant at the 0.05 level.
 
 \begin{figure}
@@ -130,13 +168,13 @@ indicates that the difference is not significant at the 0.05 level.
 
 \begin{figure}
     \href{http://www.gatsby.ucl.ac.uk/~rapela/singleNeuronSpikesAnalysisTutorial/figures/diffLambdaExpModel.html}{\includegraphics[width=6.0in]{../../figures/diffLambdaExpModel.png}}
-    \caption{Results from a bootstrap hypotesis test for the significance of the difference of the $\lambda$ parameters of the exponential models fitted to ISIs from \texttt{female1} and \texttt{female2}.}
+    \caption{Results from a bootstrap hypothesis test for the significance of the difference of the $\lambda$ parameters of the exponential models fitted to ISIs from \texttt{female1} and \texttt{female2}.}
     \label{fig:diffLambdaExpModel_fit}
 \end{figure}
 
 \subsubsection{Decoding}
 
-Figure~\ref{fig:expModelConusionMatrix} (\href{https://github.com/joacorapela/singleNeuronSpikesAnalysisTutorial/blob/master/code/scripts/doDecode.py}{doDecode.py}) shows the confusion matrix
+Figure~\ref{fig:expModelConusionMatrix} (\href{https://github.com/joacorapela/singleNeuronSpikesAnalysisTutorial/blob/master/code/scripts/doDecodeExponential.bash}{doDecodeExponential.bash}) shows the confusion matrix
 corresponding to decodings from the exponential model. The title of
 this figure shows the corresponding precision, recall and f1-score.
 Decodings from the exponential model are at chance.
@@ -166,7 +204,7 @@ their fits by an inverse Gaussian model.
 \subsubsection{Significant parameters differences}
 
 The title of Figure~\ref{fig:invGaussian_model_fit} shows the parameters
-estimated for each invGaussian model. The model for \texttt{female1} appears to
+estimated for each inverse Gaussian model. The model for \texttt{female1} appears to
 have a smaller $\mu$ parameter than that for \texttt{female2}. To test if this
 difference is statistical significant, we performed a bootstrap hypothesis
 test, which results are show in Figure~\ref{fig:diffMuInvGaussianModel_fit}
@@ -175,7 +213,7 @@ This test indicates that the difference is not significant at the 0.05 level.
 
 \begin{figure}
     \href{http://www.gatsby.ucl.ac.uk/~rapela/singleNeuronSpikesAnalysisTutorial/figures/diffParamsInvGaussianModel_mu.html}{\includegraphics[width=6.0in]{../../figures/diffParamsInvGaussianModel_mu.png}}
-    \caption{Results from a bootstrap hypotesis test for the significance of the difference of the $\mu$ parameters of the inverse Gaussian models fitted to ISIs from \texttt{female1} and \texttt{female2}.}
+    \caption{Results from a bootstrap hypothesis test for the significance of the difference of the $\mu$ parameters of the inverse Gaussian models fitted to ISIs from \texttt{female1} and \texttt{female2}.}
     \label{fig:diffMuInvGaussianModel_fit}
 \end{figure}
 
@@ -188,18 +226,46 @@ difference is significant at the 0.05 level.
 
 \begin{figure}
     \href{http://www.gatsby.ucl.ac.uk/~rapela/singleNeuronSpikesAnalysisTutorial/figures/diffParamsInvGaussianModel_lambda.html}{\includegraphics[width=6.0in]{../../figures/diffParamsInvGaussianModel_lambda.png}}
-    \caption{Results from a bootstrap hypotesis test for the significance of the difference of the $\lambda$ parameters of the inverse Gaussian models fitted to ISIs from \texttt{female1} and \texttt{female2}.}
+    \caption{Results from a bootstrap hypothesis test for the significance of the difference of the $\lambda$ parameters of the inverse Gaussian models fitted to ISIs from \texttt{female1} and \texttt{female2}.}
     \label{fig:diffLambdaInvGaussianModel_fit}
 \end{figure}
 
 \subsubsection{Decoding}
 
-Figure~\ref{fig:invGaussianModelConusionMatrix} (\href{https://github.com/joacorapela/singleNeuronSpikesAnalysisTutorial/blob/master/code/scripts/doDecode.py}{doDecode.py}) shows the confusion matrix corresponding to decodings from the inverse Gaussian model. The title of this figure shows the corresponding precision, recall and f1-score. Decodings from the inverse Gaussian model are excellent (i.e., they have a large precision, recall and f1-scores).
+Figure~\ref{fig:invGaussianModelConusionMatrix}
+(\href{https://github.com/joacorapela/singleNeuronSpikesAnalysisTutorial/blob/master/code/scripts/doDecodeInvGaussian.bash}{doDecodeInvGaussian.bash})
+shows the confusion matrix corresponding to decodings from the
+inverse Gaussian model. The title of this figure shows the
+corresponding precision, recall and f1-score. Decodings from the
+inverse Gaussian model are excellent (i.e., they achieve large
+precision and recall values).
 
 \begin{figure}
-    \href{http://www.gatsby.ucl.ac.uk/~rapela/singleNeuronSpikesAnalysisTutorial/figures/decoding_exponential_randomized_ISIs0.html}{\includegraphics[width=6.0in]{../../figures/decoding_invGaussian_randomized_ISIs0.png}}
+    \href{http://www.gatsby.ucl.ac.uk/~rapela/singleNeuronSpikesAnalysisTutorial/figures/decoding_invGaussian_randomized_ISIs0.html}{\includegraphics[width=6.0in]{../../figures/decoding_invGaussian_randomized_ISIs0.png}}
     \caption{Confusion matrix corresponding to decodings using a naive Bayes classifier with the inverse Gaussian model.}
     \label{fig:invGaussianModelConusionMatrix}
+\end{figure}
+
+It is suspicious that while we could not find significant differences
+between the spiking activity of \texttt{female1} and \texttt{female2} in the
+descriptive statistics measured in Section~\ref{sec:descriptive_statistics}, or
+in the parameter values of the models estimated in this section (except the $\lambda$
+parameter of the inverse Gaussian model), and while the decodings using the
+exponential model performed at chance, we are now observing excellent decodings
+using the inverse Gaussian model. This suggests that decodings of the
+inverse Gaussian model are artifactual. To address this concern we developed
+the following control.
+
+We built a control dataset, shuffling the labels \texttt{female1} and
+\texttt{female2} of the calculated ISIs. If decodings using the inverse
+Gaussian model are not artifactual we should observe chance decodings for the
+control dataset, as shown in Figure~\ref{fig:invGaussianModelConusionMatrix_control}
+(\href{https://github.com/joacorapela/singleNeuronSpikesAnalysisTutorial/blob/master/code/scripts/doDecodeInvGaussian_control.bash}{doDecodeInvGaussian\_control.bash}).
+
+\begin{figure}
+    \href{http://www.gatsby.ucl.ac.uk/~rapela/singleNeuronSpikesAnalysisTutorial/figures/decoding_invGaussian_randomized_ISIs1.html}{\includegraphics[width=6.0in]{../../figures/decoding_invGaussian_randomized_ISIs1.png}}
+    \caption{Confusion matrix corresponding to decodings using a naive Bayes classifier with the inverse Gaussian model and the control dataset.}
+    \label{fig:invGaussianModelConusionMatrix_control}
 \end{figure}
 
 \end{document}
