@@ -6,6 +6,8 @@ results/*
 log/*
 figures/*
 doc/*
-!doc/contents/*.tex
-!doc/contents/*pdf
+!doc/contents
+doc/contents/*
+!doc/contents/single_neuron_spike_analysis_tutorial_conents.tex
+!doc/contents/single_neuron_spike_analysis_tutorial_conents.pdf
 !doc/contents/Makefile
