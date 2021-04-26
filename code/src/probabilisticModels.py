@@ -34,7 +34,7 @@ class Exponential(ProbabilisticModel):
 
     def logLikelihood(self, x):
         N = len(x)
-        answer = N*np.log(self._lambda)*(1-x.mean())
+        answer = N*(np.log(self._lambda)-self._lambda*x.mean())
         return answer
 
 class InverseGaussian(ProbabilisticModel):
